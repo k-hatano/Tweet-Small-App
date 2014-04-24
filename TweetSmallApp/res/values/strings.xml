@@ -17,8 +17,10 @@
  */
 -->
 <resources>
-    <string name="app_name">SmallApp Sample</string>
-    <string name="hello">Hello World, SmallApp Sample!</string>
-    <string name="button">Button</string>
+    <string name="app_name">Tweet Small App</string>
     <string name="action_settings">Settings</string>
+    <string name="tweet">Tweet</string>
+    <string name="input_something">Input something to tweet</string>
+    <string name="tweet_successed">Tweet successed</string>
+    <string name="tweet_failed">Tweet failed</string>
 </resources>

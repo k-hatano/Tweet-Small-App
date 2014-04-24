@@ -16,5 +16,10 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
+    <color name="sky">#66CCFF</color>
+    <color name="aqua">#00A0FF</color>
+    <color name="ice">#CCFFFF</color>
+    <color name="ocean">#004080</color>
+    <color name="white">#FFFFFF</color>
 
 </resources>
