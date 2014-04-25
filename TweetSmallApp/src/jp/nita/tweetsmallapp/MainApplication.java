@@ -28,9 +28,11 @@ import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 import twitter4j.conf.ConfigurationBuilder;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Handler;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -41,6 +43,8 @@ import com.sony.smallapp.SmallApplication;
 
 public class MainApplication extends SmallApplication {
 
+	final static Handler handler = new Handler();
+	
 	TextView tx;
 
 	@Override

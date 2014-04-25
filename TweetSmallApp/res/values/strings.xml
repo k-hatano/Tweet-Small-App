@@ -23,7 +23,7 @@
     <string name="input_something">Input something to tweet</string>
     <string name="tweet_succeed">Tweet succeed</string>
     <string name="tweet_failed">Tweet failed</string>
-    <string name="need_to_authorize">You need to authorize your Twitter accounts. Please tap &quot;Authorize&quot;.</string>
+    <string name="need_to_authorize">You need to authorize your Twitter accounts. Please tap &quot;Authorize&quot; and request PIN code.</string>
     <string name="authorize">Authorize</string>
     <string name="pin">PIN Code</string>
     <string name="ok">OK</string>
