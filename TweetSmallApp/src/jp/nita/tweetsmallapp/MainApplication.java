@@ -17,10 +17,20 @@
 
 package jp.nita.tweetsmallapp;
 
+import jp.nita.tweetsmallapp.TweetAsyncTaskCollection.AuthorizationAsyncTask;
+import jp.nita.tweetsmallapp.TweetAsyncTaskCollection.InputPINCodeAsyncTask;
+import jp.nita.tweetsmallapp.TweetAsyncTaskCollection.TweetAsyncTask;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
+import twitter4j.auth.AccessToken;
+import twitter4j.auth.RequestToken;
+import twitter4j.conf.ConfigurationBuilder;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -30,58 +40,106 @@ import com.sony.smallapp.SmallAppWindow;
 import com.sony.smallapp.SmallApplication;
 
 public class MainApplication extends SmallApplication {
-   
+
 	TextView tx;
-	
+
 	@Override
-    public void onCreate() {
-        super.onCreate();
-        setContentView(R.layout.main);
-        setTitle(R.string.app_name);
+	public void onCreate() {
+		super.onCreate();
+		setContentView(R.layout.main);
+		setTitle(R.string.app_name);
 
-        SmallAppWindow.Attributes attr = getWindow().getAttributes();
-        attr.minWidth = 240; /* The minimum width of the application, if it's resizable.*/
-        attr.minHeight = 120; /*The minimum height of the application, if it's resizable.*/
-        attr.width = 240;  /*The requested width of the application.*/
-        attr.height = 120;  /*The requested height of the application.*/
-        attr.flags |= SmallAppWindow.Attributes.FLAG_RESIZABLE;   /*Use this flag to enable the application window to be resizable*/
-//        attr.flags |= SmallAppWindow.Attributes.FLAG_NO_TITLEBAR;  /*Use this flag to remove the titlebar from the window*/
-//        attr.flags |= SmallAppWindow.Attributes.FLAG_HARDWARE_ACCELERATED;  /* Use this flag to enable hardware accelerated rendering*/
+		SmallAppWindow.Attributes attr = getWindow().getAttributes();
+		attr.minWidth = 240; /* The minimum width of the application, if it's resizable.*/
+		attr.minHeight = 120; /*The minimum height of the application, if it's resizable.*/
+		attr.width = 240;  /*The requested width of the application.*/
+		attr.height = 120;  /*The requested height of the application.*/
+		attr.flags |= SmallAppWindow.Attributes.FLAG_RESIZABLE;   /*Use this flag to enable the application window to be resizable*/
+		//        attr.flags |= SmallAppWindow.Attributes.FLAG_NO_TITLEBAR;  /*Use this flag to remove the titlebar from the window*/
+		//        attr.flags |= SmallAppWindow.Attributes.FLAG_HARDWARE_ACCELERATED;  /* Use this flag to enable hardware accelerated rendering*/
 
-        getWindow().setAttributes(attr); /*setting window attributes*/
+		getWindow().setAttributes(attr); /*setting window attributes*/
 
-        findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-            	String tweet=((EditText)findViewById(R.id.content)).getText().toString();
-            	if("".equals(tweet)){
-            		Toast.makeText(v.getContext(),getString(R.string.input_something),Toast.LENGTH_LONG).show();
-            		return;
-            	}
-            	
-               	Twitter twitter = TwitterFactory.getSingleton();
-               	try {
-					Status status = twitter.updateStatus(tweet);
-					Toast.makeText(v.getContext(),getString(R.string.tweet_successed),Toast.LENGTH_LONG).show();
-				} catch (TwitterException e) {
-					Toast.makeText(v.getContext(),getString(R.string.tweet_failed),Toast.LENGTH_LONG).show();
-					e.printStackTrace();
+		findViewById(R.id.auth).setOnClickListener(new View.OnClickListener() {
+			public void onClick(final View v) {
+
+				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(v.getContext());
+				alertDialogBuilder.setTitle(v.getContext().getString(R.string.authorize));
+				alertDialogBuilder.setMessage(v.getContext().getString(R.string.request_or_input));
+				alertDialogBuilder.setPositiveButton(v.getContext().getString(R.string.request),
+						new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						TweetAsyncTaskCollection collection=new TweetAsyncTaskCollection();
+						AuthorizationAsyncTask task=collection.new AuthorizationAsyncTask(MainApplication.this);
+						task.execute();
+					}
+				});
+				alertDialogBuilder.setNeutralButton(v.getContext().getString(R.string.input),
+						new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						inputPINCode(v);
+					}
+				});
+				alertDialogBuilder.setNegativeButton(v.getContext().getString(R.string.cancel),
+						new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+					}
+				});
+				alertDialogBuilder.setCancelable(true);
+				AlertDialog alertDialog = alertDialogBuilder.create();
+				alertDialog.show();
+			}
+		});
+
+		findViewById(R.id.tweet).setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				String tweet=((EditText)findViewById(R.id.content)).getText().toString();
+				if("".equals(tweet)){
+					Toast.makeText(v.getContext(),getString(R.string.input_something),Toast.LENGTH_LONG).show();
+					return;
 				}
-            }
-        });
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
+				TweetAsyncTaskCollection collection=new TweetAsyncTaskCollection();
+				TweetAsyncTask task=collection.new TweetAsyncTask(MainApplication.this);
+				task.execute(tweet);
+			}
+		});
+	}
 
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
+	public void inputPINCode(final View v){
+		final EditText editView = new EditText(v.getContext());
+		new AlertDialog.Builder(v.getContext())
+		.setTitle(v.getContext().getString(R.string.input))
+		.setView(editView)
+		.setPositiveButton(v.getContext().getString(R.string.ok), new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				TweetAsyncTaskCollection collection=new TweetAsyncTaskCollection();
+				InputPINCodeAsyncTask task=collection.new InputPINCodeAsyncTask(MainApplication.this);
+				task.execute(editView.getText().toString());
+			}
+		})
+		.setNegativeButton(v.getContext().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+			}
+		})
+		.show();
+	}
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
+	@Override
+	public void onStart() {
+		super.onStart();
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+	}
 }
