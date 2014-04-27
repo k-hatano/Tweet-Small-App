@@ -14,6 +14,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 import twitter4j.Status;
 
@@ -43,6 +45,7 @@ public class TweetAsyncTaskCollection {
 					"ogf2wOHGxA5pmaGgl1DRbu4uKTpghudOkecMGGx2TmKwlmnrp7");
 			twitter.setOAuthAccessToken(null);
 			try {
+				showProgressBar(superview);
 				requestToken = twitter.getOAuthRequestToken();
 				String url = requestToken.getAuthorizationURL();
 
@@ -50,9 +53,12 @@ public class TweetAsyncTaskCollection {
 				Intent i = new Intent(Intent.ACTION_VIEW,uri);
 				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				superview.startActivity(i);
+				showToast(superview,superview.getString(R.string.launching_browser));
 			} catch (TwitterException e) {
 				showToast(superview,superview.getString(R.string.setting_failed));
 				e.printStackTrace();
+			}finally{
+				hideProgressBar(superview);
 			}
 			return null;
 		}
@@ -75,6 +81,7 @@ public class TweetAsyncTaskCollection {
 					"ogf2wOHGxA5pmaGgl1DRbu4uKTpghudOkecMGGx2TmKwlmnrp7");
 			twitter.setOAuthAccessToken(null);
 			try {
+				showProgressBar(superview);
 				AccessToken accessToken=twitter.getOAuthAccessToken(requestToken,params[0]);
 				String token=accessToken.getToken();
 				String secret=accessToken.getTokenSecret();
@@ -94,6 +101,8 @@ public class TweetAsyncTaskCollection {
 			} catch (TwitterException e) {
 				showToast(superview,superview.getString(R.string.setting_failed));
 				e.printStackTrace();
+			}finally{
+				hideProgressBar(superview);
 			}
 			return null;
 		}
@@ -125,14 +134,23 @@ public class TweetAsyncTaskCollection {
 			twitter.setOAuthConsumer("TkUccte9JhDJvkOpEfXSSNJkH",
 					"ogf2wOHGxA5pmaGgl1DRbu4uKTpghudOkecMGGx2TmKwlmnrp7");
 			twitter.setOAuthAccessToken(accessToken);
+			
+			if("".equals(params[0])){
+				showToast(superview,superview.getString(R.string.input_something));
+				return null;
+			}
 			try {
+				showProgressBar(superview);
 				twitter4j.Status status = twitter.updateStatus(params[0]);
 			} catch (TwitterException e) {
 				showToast(superview,superview.getString(R.string.tweet_failed));
 				e.printStackTrace();
 				return null;
+			}finally{
+				hideProgressBar(superview);
 			}
 			showToast(superview,superview.getString(R.string.tweet_succeed));
+			resetContent(superview);
 			return null;
 		}
 
@@ -145,6 +163,46 @@ public class TweetAsyncTaskCollection {
 				handler.post(new Runnable() {
 					public void run() {
 						Toast.makeText(context, title, Toast.LENGTH_LONG).show();
+					}
+				});
+			}
+		}).start();
+	}
+	
+	public static void showProgressBar(final MainApplication view){
+		new Thread(new Runnable(){
+			@Override
+			public void run() {
+				handler.post(new Runnable() {
+					public void run() {
+						(view.findViewById(R.id.progressBar)).setVisibility(View.VISIBLE);
+					}
+				});
+			}
+		}).start();
+	}
+
+	public static void hideProgressBar(final MainApplication view){
+		new Thread(new Runnable(){
+			@Override
+			public void run() {
+				handler.post(new Runnable() {
+					public void run() {
+						(view.findViewById(R.id.progressBar)).setVisibility(View.GONE);
+					}
+				});
+			}
+		}).start();
+	}
+
+	public static void resetContent(final MainApplication view){
+		new Thread(new Runnable(){
+			@Override
+			public void run() {
+				handler.post(new Runnable() {
+					public void run() {
+						EditText edit=(EditText)(view.findViewById(R.id.content));
+						edit.setText("");
 					}
 				});
 			}

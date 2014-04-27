@@ -20,19 +20,20 @@
     <string name="app_name">Tweet Small App</string>
     <string name="action_settings">Settings</string>
     <string name="tweet">Tweet</string>
-    <string name="input_something">Input something to tweet</string>
-    <string name="tweet_succeed">Tweet succeed</string>
-    <string name="tweet_failed">Tweet failed</string>
+    <string name="input_something">Input text to tweet.</string>
+    <string name="tweet_succeed">Tweet succeeded.</string>
+    <string name="tweet_failed">Tweet failed.</string>
     <string name="need_to_authorize">You need to authorize your Twitter accounts. Please tap &quot;Authorize&quot; and request PIN code.</string>
     <string name="authorize">Authorize</string>
     <string name="pin">PIN Code</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
-    <string name="setting_failed">Setting failed</string>
+    <string name="setting_failed">Setting failed.</string>
     
     <string name="request_or_input">Request or Input PIN Code?\n(At first, you need to request PIN code)</string>
+    <string name="launching_browser">Launching browser. You can quit Tweet Small App once.</string>
     <string name="request">Request</string>
     <string name="input">Input</string>
     <string name="input_pin_code">Input PIN code</string>
-    <string name="authorization_succeed">Authorization succeed</string>
+    <string name="authorization_succeed">Authorization succeeded.</string>
 </resources>

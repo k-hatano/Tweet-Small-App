@@ -30,7 +30,8 @@
     <string name="cancel">キャンセル</string>
     <string name="setting_failed">設定に失敗しました</string>
     
-    <string name="request_or_input">PIN コードのリクエストを行うか、入力を行うか選択してください。\n(最初には、PIN コードのリクエストを行う必要があります)</string>
+    <string name="request_or_input">PIN コードのリクエストを行うか、入力を行うか選択してください。\n(最初は、PIN コードのリクエストを行う必要があります)</string>
+    <string name="launching_browser">ブラウザを起動しています。Tweet Small Appは一旦終了してかまいません。</string>
     <string name="request">リクエスト</string>
     <string name="input">入力</string>
     <string name="input_pin_code">PIN コードを入力してください。</string>
