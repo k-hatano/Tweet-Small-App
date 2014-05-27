@@ -36,4 +36,6 @@
     <string name="input">入力</string>
     <string name="input_pin_code">PIN コードを入力してください。</string>
     <string name="authorization_succeed">認証が完了しました。</string>
+    
+    <string name="zero">0</string>
 </resources>

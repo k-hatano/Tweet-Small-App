@@ -20,23 +20,16 @@ package jp.nita.tweetsmallapp;
 import jp.nita.tweetsmallapp.TweetAsyncTaskCollection.AuthorizationAsyncTask;
 import jp.nita.tweetsmallapp.TweetAsyncTaskCollection.InputPINCodeAsyncTask;
 import jp.nita.tweetsmallapp.TweetAsyncTaskCollection.TweetAsyncTask;
-import twitter4j.Status;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
-import twitter4j.auth.AccessToken;
-import twitter4j.auth.RequestToken;
-import twitter4j.conf.ConfigurationBuilder;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.sony.smallapp.SmallAppWindow;
 import com.sony.smallapp.SmallApplication;
@@ -68,7 +61,9 @@ public class MainApplication extends SmallApplication {
 
 		findViewById(R.id.auth).setOnClickListener(new View.OnClickListener() {
 			public void onClick(final View v) {
-
+				
+				((InputMethodManager)MainApplication.this.getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(v.getWindowToken(), 0);
+		
 				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(v.getContext());
 				alertDialogBuilder.setTitle(v.getContext().getString(R.string.authorize));
 				alertDialogBuilder.setMessage(v.getContext().getString(R.string.request_or_input));
@@ -108,12 +103,39 @@ public class MainApplication extends SmallApplication {
 				task.execute(tweet);
 			}
 		});
+		
+		((EditText)findViewById(R.id.content)).addTextChangedListener(new TextWatcher(){
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void afterTextChanged(Editable s) {
+				EditText content = ((EditText)findViewById(R.id.content));
+				int length=content.getText().length();
+				((TextView)findViewById(R.id.lettersCount)).setText(""+length);
+				if(length>140){
+					((TextView)findViewById(R.id.lettersCount)).setTextColor(getResources().getColor(R.color.red));
+				}else{
+					((TextView)findViewById(R.id.lettersCount)).setTextColor(getResources().getColor(R.color.ocean));
+				}
+			}
+		});
 	}
 
 	public void inputPINCode(final View v){
 		final EditText editView = new EditText(v.getContext());
 		new AlertDialog.Builder(v.getContext())
 		.setTitle(v.getContext().getString(R.string.input))
+		.setMessage(v.getContext().getString(R.string.input_pin_code))
 		.setView(editView)
 		.setPositiveButton(v.getContext().getString(R.string.ok), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {

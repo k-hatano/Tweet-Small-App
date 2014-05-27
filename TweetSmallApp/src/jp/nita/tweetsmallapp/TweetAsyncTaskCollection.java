@@ -13,11 +13,11 @@ import android.content.SharedPreferences.Editor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-import twitter4j.Status;
+
+import com.sony.smallapp.SmallAppWindow;
 
 public class TweetAsyncTaskCollection {
 
@@ -53,6 +53,7 @@ public class TweetAsyncTaskCollection {
 				Intent i = new Intent(Intent.ACTION_VIEW,uri);
 				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				superview.startActivity(i);
+				minimize(superview);
 				showToast(superview,superview.getString(R.string.launching_browser));
 			} catch (TwitterException e) {
 				showToast(superview,superview.getString(R.string.setting_failed));
@@ -169,6 +170,19 @@ public class TweetAsyncTaskCollection {
 		}).start();
 	}
 	
+	public static void minimize(final MainApplication view){
+		new Thread(new Runnable(){
+			@Override
+			public void run() {
+				handler.post(new Runnable() {
+					public void run() {
+						view.getWindow().setWindowState(SmallAppWindow.WindowState.MINIMIZED);
+					}
+				});
+			}
+		}).start();
+	}
+	
 	public static void showProgressBar(final MainApplication view){
 		new Thread(new Runnable(){
 			@Override
@@ -176,6 +190,7 @@ public class TweetAsyncTaskCollection {
 				handler.post(new Runnable() {
 					public void run() {
 						(view.findViewById(R.id.progressBar)).setVisibility(View.VISIBLE);
+						(view.findViewById(R.id.lettersCount)).setVisibility(View.GONE);
 					}
 				});
 			}
@@ -189,6 +204,7 @@ public class TweetAsyncTaskCollection {
 				handler.post(new Runnable() {
 					public void run() {
 						(view.findViewById(R.id.progressBar)).setVisibility(View.GONE);
+						(view.findViewById(R.id.lettersCount)).setVisibility(View.VISIBLE);
 					}
 				});
 			}

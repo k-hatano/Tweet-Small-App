@@ -17,26 +17,13 @@
  */
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootview"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/ice"
     android:gravity="top"
     android:orientation="vertical"
-    android:padding="8dp" >
-
-    <EditText
-        android:id="@+id/content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/tweet"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="4dp"
-        android:ems="10"
-        android:gravity="top"
-        android:inputType="textMultiLine" >
-
-        <requestFocus />
-    </EditText>
+    android:padding="6dp" >
 
     <Button
         android:id="@+id/auth"
@@ -63,8 +50,35 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/content"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
         android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/lettersCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tweet"
+        android:layout_marginRight="16dp"
+        android:gravity="right"
+        android:text="@string/zero"
+        android:textColor="@color/ocean"
+        android:visibility="visible"
+        android:layout_alignParentRight="true"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    
+    <EditText
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tweet"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="4dp"
+        android:ems="10"
+        android:gravity="top"
+        android:inputType="textMultiLine" >
+
+        <requestFocus />
+    </EditText>
 
 </RelativeLayout>

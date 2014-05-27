@@ -30,10 +30,12 @@
     <string name="cancel">Cancel</string>
     <string name="setting_failed">Setting failed.</string>
     
-    <string name="request_or_input">Request or Input PIN Code?\n(At first, you need to request PIN code)</string>
+    <string name="request_or_input">Would you like to Request or Input PIN Code?\n(At first, you need to request PIN code)</string>
     <string name="launching_browser">Launching browser. You can quit Tweet Small App once.</string>
     <string name="request">Request</string>
     <string name="input">Input</string>
     <string name="input_pin_code">Input PIN code</string>
     <string name="authorization_succeed">Authorization succeeded.</string>
+    
+    <string name="zero">0</string>
 </resources>
