@@ -18,7 +18,7 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="jp.nita.tweetsmallapp"
-    android:versionCode="2"
+    android:versionCode="3"
     android:versionName="1.1" android:installLocation="auto">
 
     <uses-sdk android:minSdkVersion="16" android:targetSdkVersion="16"/>
